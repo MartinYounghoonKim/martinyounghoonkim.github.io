@@ -6,7 +6,7 @@
   <link href="/feed.xml" rel="self"/>
   
   <link href="http://blog.martinwork.co.kr/"/>
-  <updated>2020-01-18T15:27:06.197Z</updated>
+  <updated>2020-03-24T08:13:59.746Z</updated>
   <id>http://blog.martinwork.co.kr/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>01. NestJS란</title>
+    <link href="http://blog.martinwork.co.kr/nestjs/2020/03/22/what-is-nestjs.html"/>
+    <id>http://blog.martinwork.co.kr/nestjs/2020/03/22/what-is-nestjs.html</id>
+    <published>2020-03-22T14:21:51.000Z</published>
+    <updated>2020-03-24T08:13:59.746Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="01-NestJS란"><a href="#01-NestJS란" class="headerlink" title="01. NestJS란"></a>01. NestJS란</h2><p>NodeJS 진영에도 여러개의 프레임워크가 있다. 그 중 가장 대표적인 것이 Express 라고 볼 수 있다. Express 를 이용하여 개발을 하다보면 항상 아쉬웠던 부분은 프레임워크 안에서 지원해주는 것이 너무 적으며, 하다못해 Typescript를 사용하려고 해도 설정을 개발자가 직접 설정해줘야 한다는 점에서 많은 골치가 아팠다. 그러던 중, 예전 직장 동료가 이야기했던 NestJS에 대해 떠올리게 되었고, 튜터리얼을 살펴보면 중 Springboot와 많은 점에서 유사하다는 것을 느낄 수 있으며, 기본적으로 Typescript를 지원한다는 것을 알 수 있다. 그래서 이참에 현재 진행하고 있는 사이드 프로젝트의 Front-end 서버는 NestJS를 이용하여 구축해보기로 하였다. </p><p>일단 NestJS는 기본적으로 Typescript를 지원하며 Javascript로 애플리케이션을 작성하는 것도 가능하다. 뿐만 아니라 OOP(Object Oriented Programming), FP(Functional Programming), FRP(Functional Reactive Programming) 등등 좋은 키워드는 모두 나온다. 이 중에서 NestJS를 사용해야겠다 라는 생각을 하게된 결정적인 이유는 OOP, 즉 객체 지향 프로그래밍이었다.</p><p><img src="/images/nestjs/nestjs01.png" alt="OOP"></p><p>NestJS는 NodeJS 프레임워크인 Express나 Fastify 등의 API를 직접 사용할 수도 있으며 혹은 NestJS 에서 제공하는 추상화된 인터페이스를 이용할 수도 있다. 이러한 NestJS는 Angular로부터 영감을 받아 만들어졌다. 일단 제일 Javascript와 Typescript를 이용하여 주로 개발하는 나로서는 Frontend코드와 Backend코드를 하나의 언어로 작성할 수 있다는 점이 가장 큰 장점이었다. 무엇보다 항상 제일 고민이었던 부분은 Typescript를 이용하여 개발을 하다보니 항상 생기는 서버 애플리케이션과의 Model 타입에 대한 불일치였는데, NestJS를 이용하여 개발을 하면 이러한 부분에 대해서 해결할 수 있을 것 같다는 생각을 하였다.</p><p>요즘 대부분의 라이브러리나 프레임워크에서 제공해주듯 NestJS 역시 CLI를 통해 프로젝트 스케폴딩을 쉽게 할 수 있다. 셋팅하기에 앞서 @nestjs/cli가 Global로 설치가 되어있어야 하나 혹여라도 전역에 설치하기 싫다면 npx를 이용하여 셋팅을 해도 될 것 같으며, 아예 디펜던시부터 하나 하나 설치하여 진행하는 방법도 있다.</p><p>일단 나는 Next와 함께 이용하여 사용할 예정이기 때문에 프로젝트의 이름은 nest-next-typescript로 지었다.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ npm i -g @nestjs/cli</span><br><span class="line">$ nest new nest-next-typescript</span><br></pre></td></tr></table></figure></p><p>프로젝트가 생성된 후 각각의 디렉토리를 살펴보면 아래와 같다.</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">├── src</span><br><span class="line">     ├── app.controller.ts</span><br><span class="line">     ├── app.service.ts</span><br><span class="line">     ├── app.module.ts</span><br><span class="line">     ├── main.ts</span><br></pre></td></tr></table></figure><p>기본적으로 생성되는 단일 컨트롤러 파일(app.controller.ts)과 간단한 텍스트를 요청한 controller에 전달해주는 서비스 파일(app.service.ts), 그리고 애플리케이션 내의 모듈을 설정하는 파일(app.module.ts) 그리고 에플리케이션의 엔트리 파일(main.ts) 등이 생긴다. controller나 module, 엔트리 파일의 경우에는 익숙하겠지만, service 파일에 경우에는 개념이 조금 헷갈릴 수 있다. 이에 대해서는 뒤에서 별도로 설명하며, 지금은 아래의 사진과 같이 비즈니스 로직을 처리하는 비즈니스 레이어 정도로만 이해하고 넘어가도록 하자.</p><p><img src="/images/nestjs/nestjs02.png" alt="비즈니스 레이어와 프레젠테이션 레이어"></p><p>이 중 엔트리 파일을 살펴보면 안에 NestJS 애플리케이션 인스턴스를 만드는 각각의 설정 값들이 bootstrap 함수 안에서 실행되는 것을 볼 수 있다. </p><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; NestFactory &#125; <span class="keyword">from</span> <span class="string">'@nestjs/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; AppModule &#125; <span class="keyword">from</span> <span class="string">'./app.module'</span>;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">bootstrap</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> app = <span class="keyword">await</span> NestFactory.create(AppModule);</span><br><span class="line">  <span class="keyword">await</span> app.listen(<span class="number">3000</span>);</span><br><span class="line">&#125;</span><br><span class="line">bootstrap();</span><br></pre></td></tr></table></figure><p>구조 자체적으로 Springboot 와 동일하다는 것을 알 수 있다. 그래서인지 뭔가 앞으로도 NestJS를 좋아할 것 같다는 생각이 든다. 일단은 폴더링에 대한 큰 고민 없이 Springboot 애플리케이션과 동일하게 가져가도 좋지 않을까 싶다.</p>]]></content>
+    
+    <summary type="html">
+    
+      NodeJS 프레임워크 NestJS에 대해서 살펴보도록 하자.
+    
+    </summary>
+    
+      <category term="NestJS" scheme="http://blog.martinwork.co.kr/categories/nestjs/"/>
+    
+    
+      <category term="NestJS" scheme="http://blog.martinwork.co.kr/tags/nestjs/"/>
+    
+      <category term="NodeJS Framework" scheme="http://blog.martinwork.co.kr/tags/nodejs-framework/"/>
+    
+  </entry>
   
   <entry>
     <title>MYSQL 데이터 타입</title>
@@ -194,9 +218,9 @@
     
       <category term="Typescript" scheme="http://blog.martinwork.co.kr/tags/typescript/"/>
     
-      <category term="d.ts" scheme="http://blog.martinwork.co.kr/tags/d-ts/"/>
-    
       <category term="interface" scheme="http://blog.martinwork.co.kr/tags/interface/"/>
+    
+      <category term="d.ts" scheme="http://blog.martinwork.co.kr/tags/d-ts/"/>
     
   </entry>
   
@@ -458,28 +482,6 @@
     
     
       <category term="Google Cloud Platform" scheme="http://blog.martinwork.co.kr/tags/google-cloud-platform/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>SPA 환경에서의 인피니티 스크롤</title>
-    <link href="http://blog.martinwork.co.kr/theory/2019/01/19/infinite-scroll-position-restoration.html"/>
-    <id>http://blog.martinwork.co.kr/theory/2019/01/19/infinite-scroll-position-restoration.html</id>
-    <published>2019-01-18T15:50:51.000Z</published>
-    <updated>2019-09-06T14:51:07.553Z</updated>
-    
-    <content type="html"><![CDATA[<p>우리는 웹 혹은 앱 애플리케이션 속에서 쉽게 인피니티 스크롤 기능을 접할 수 있다. 인피니티 스크롤은 단어 그대로 <code>끊임없는(무한) 마우스 스크롤</code>를 의미한다. PC와 같이 디바이스의 사이즈가 크고 마우스를 통해 세부적인 컨트롤이 가능할 경우에는 페이징 처리가 유용할 수 있지만, 모바일과 같이 작은 디바이스 안의 페이징은 사용하기에 괜한 불편함만 남겨준다. 이러한 이유로 인해 스크린이 작은 모바일에서는 인피니티 스크롤 기능이 사용자 친화적인 UX를 제공해준다. 이에 대한 개념이나 혹은 이론에 대해서는 따로 다루진 않지만 궁금하신 분들을 검색을 해보면 좋은 정보가 많이 나오기 때문에 검색해보는 것을 추천한다.</p><p><a href="https://blog.martinwork.co.kr/about/">현재의 회사</a>에서 모바일에서 제공되는 웹앱은 거의 대부분이 인피니티 스크롤의 UX를 제공한다. 이는 대략 5달 전, 마이티몬의 구매내역 프로젝트를 담당할 때까지만 해도 마이티몬 프로젝트에서만 인피니티 스크롤을 통해 페이징을 제공해주는 것이라고 생각했다. 하지만 마이티몬 프로젝트가 끝나고 나서 다른 프로젝트를 진행하며 타도메인의 UX를 살펴보니 티몬 서비스 내의 거의 대부분의 프로젝트들이 인피니티 스크롤로 페이징을 제공하고 있었다. 그렇기 때문에 이미 팀원에게는 익숙해져 별거 아닐 수 있던, 그리고 나에겐 새로웠던 SPA 환경에서의 인피니티 스크롤를 구현하며 생겼던 트러블 슈팅과 생각을 정리해보고자 한다. </p><h2 id="😋-평화롭던-시작"><a href="#😋-평화롭던-시작" class="headerlink" title="😋 평화롭던 시작"></a>😋 평화롭던 시작</h2><p>인피니티 스크롤의 구현은 생각보다 어렵지 않았다. 내가 제작한 인피니티 스크롤 컴포넌트가 API를 요청하는 기준은 아래의 세가지이다.</p><ul><li>👉 현재 인피니티 스크롤 컴포넌트가 API 요청 중인 아닌 경우</li><li>👉 인피니티 스크롤의 API 요청을 통해 더 받아올 데이터가 존재하는 경우</li><li>👉 현재 스크롤된 스크롤의 위치와 디바이스의 사이즈가 인피니티 스크롤의 대상 되는 DOM의 높이와 대상 DOM의 시작점보다 크거나 같을 때</li></ul><p>일단 첫번째 사항의 경우, 불필요한 API 요청을 줄이기 위해 API 요청 상태가 <code>PENDING 상태</code>인 경우에는 더이상의 API 요청을 보내지 않는다. 반대로 API 요청 상태가 <code>SUCCESS 상태</code> 혹은 <code>FAILURE 상태</code>인 경우 다음 페이징에 해당하는 API 요청을 날리던가 혹은 별도의 Exception 처리를 한다. </p><p>두번째의 경우 API 요청을 통해 다음 API 요청을 했을 때, 더 받을 데이터가 있는지에 대한 여부로서 이 또한 마찬가지로 불필요한 API 요청을 줄이기 위한 것이기도 하며, 요청할 다음의 데이터가 없는 경우에는 scroll 이벤트를 해제시켜버린다.  </p><p>잎의 두가지의 경우는 API 통신 상태 혹은 다음의 데이터가 존재하는지 여부에 해당하는 API 서버의 응답값 등과 같이 API 서버의 결과에 밀접한 의존성을 가진다. 하지만 마지막의 경우에는 API 서버의 응답값과는 무관하게 DOM의 조작을 통해 이뤄진다. 멏가지의 라이브러리 및 구현한 방법을 살펴본 결과 방법은 여러가지였지만 나는 아래와 같이 간단한 방법으로 해결하였다 .</p><p><img src="/images/review/infinite-scroll-position-restoration01.png" alt="마이티몬 구매내역 화면"></p><p>일단은 인피니티 스크롤 기능과는 무관한 영역을 구한다. 이 영역은 고정적인 영역이기도 하면서, 인피니티 스크롤이 이뤄지는 돔(이하 타겟 DOM)의 시작 위치이기도 하다. 그 후 타겟 DOM의 높이값을 구하여 서로 더해준다. 그리고 이 값과 현재 사용자가 스크롤된 위치 + 사용자의 디바이스 사이즈를 비교해준다.</p><p><img src="/images/review/infinite-scroll-position-restoration02.png" alt="인피니티 스크롤 코드에 대한 간략한 설명"></p><p>물론 정책에 따라 API 요청에 대한 임계점 기준을 낮게 잡는다면 임계점이 넘어가는 구간의 화면(예를 들어 Footer 영역 등과 같이)을 사용자가 보지 않아도 되며, 오히려 API 요청을 미리 날린 후 임계점에 다다르기 전에 데이터를 받아올 수 있기 때문에 사용자 입장에서 데이터가 보여지는 속도가 더 빠르다고 느낄 수도 있을 것이다. </p><p>하지만 여기까지가 끝이었다면, 이 포스팅의 제목이 인피니티 스크롤 기능 구현하기 정도로 끝났을 것이다. 하지만 인피니티 스크롤의 기능에 대한 스펙은 이것이 끝이 아니었다.</p><h2 id="🙋‍-마틴-이전에-내가-보고-있던-페이지의-스크롤-위치가-저장이-안되요"><a href="#🙋‍-마틴-이전에-내가-보고-있던-페이지의-스크롤-위치가-저장이-안되요" class="headerlink" title="🙋‍ 마틴, 이전에 내가 보고 있던 페이지의 스크롤 위치가 저장이 안되요!"></a>🙋‍ 마틴, 이전에 내가 보고 있던 페이지의 스크롤 위치가 저장이 안되요!</h2><p>앱 안에서는 브라우저와 같이 페이지의 링크를 이동시키기보단 새로운 앱 창을 실행시키는 경우가 많다. 이를 티몬에서는 <code>콜앱을 실행시킨다</code> 라고 표현을 하는데, 이러한 경우에는 인피니티 스크롤의 위치 저장 이슈가 터질 일이 없다. 스크롤하다가 새창을 띄운 후, 액션이 끝나면 새 창이 종료되니 이슈가 나올 일이 없다. 마찬가지로 마이티몬의 구매내역 페이지 역시 모바일 앱에서는 상세보기 페이지로 이동 시 새로운 앱창을 띄우기 때문에 문제가 되진 않았지만, 모바일웹에서는 새창으로 띄우는 것이 아니라 링크를 통해 페이지가 이동하는 것이기 때문에 처음에 배포할 당시에는 구매내역 페이지에서 구매상세로 갔다가 다시 구매내역으로 오면 최상단으로 스크롤링해주는 스펙을 가지고 있었다. <del>나는 스펙이라고 표현하지만 기획자분은 버그라고 표현했다.</del>  </p><p><img src="/images/review/infinite-scroll-position-restoration03.png" alt="스펙이냐 버그냐"></p><p>하지만 인피니티 스크롤링을 지원해주면서 다시 진입시 페이지의 최상단으로 이동시켜주는 것은 누가 생각해도 불편한 UX였다. 이에 대해 개선을 하고자 기획자와 스펙에 대해서 상의하였고, 상의 후 개선한 작업은 다음과 같았다.</p><ul><li>👉 구매 내역에서 구매 상세 페이지로 이동할 때 현재의 스크롤 위치를 저장한다.</li><li>👉 구매 상세 페이지에서 구매내역 페이지로 다시 돌아올 때 저장한 스크롤 위치로 이동시킨다.</li><li>👉 저장된 스크롤의 위치가 10개(스크롤링시 받아오는 데이터의 갯수)를 초과할 경우, 강제로 스크롤을 내리며 해당 위치에 도달할때까지 자동으로 API를 호출하여 데이터를 받아온다. </li></ul><p>위와 같이 작업한 후 배포하고 나서 문득 API 호출 스펙이 떠올랐다. 과거 프로젝트 오픈하기 전 특정 이슈로 인해 종종 API 호출 도중 유효하지 않은 상태값(2XX을 제외한 4XX 혹은 5XX)을 응답해줄 때마다 해당 에러에 대한 Exception 처리로 API 재요청하는 코드를 추가했다. 물론 연속으로 2번 이상 동일한 에러가 난다면 재요청을 날리지 않고 다른 Exception 처리를 해줬지만, 어찌되었든 만약 강제로 해당 위치로 도달할 때까지 API를 호출하게 되면 어떠한 사이드 이펙트가 터질지 알 수 없었다. 최악의 경우에는 미친듯이 API 요청을 날리다가 앱 크러쉬로 인해 애플리케이션을 꺼지는 상황이 생길 수도 있었다. 이런 상황이 생기면 애초에 배포 자체도 안됐거니와 개발을 하며 수백번이 넘는 테스트를 해봤을 때 이러한 상황이 터진 적은 없었지만, 어찌되었든 개발을 하면서 최악의 수를 고려해서 개발을 해야했기 때문에 완전히 배제할 수는 없었다. 어찌되었든 한명의 사용자라도 이런 상황에 직면하여 애플리케이션이 망가진다면 서비스에 대한 신뢰가 떨어질 뿐만 아니라, 사용자 경험이 역시 좋지 않을 수 밖에 없기 때문이다.</p><p>그래서 두번째 생각했던 방법은 다음과 같았다.</p><ul><li>👉 구매 내역에서 구매 상세 페이지로 이동할 때 구매 내역의 데이터와 현재의 스크롤 위치를 저장한다.</li><li>👉 구매 상세보기 페이지에서 구매내역 페이지로 다시 돌아올 때, 저장된 데이터를 이용하여 구매 내역을 보여준다.</li><li>👉 저장된 스크롤 위치로 이동시킨다.</li></ul><p>하지만 이러한 방법 또한 문제가 없었던 것이 아니다. 넷플릭스나 왓챠와 같은 서비스에서는 동일 계정에 대해서 로그인 중복 체크를 검사하여 플랫폼과 무관하게 하나의 계정만 로그인 상태를 유지한다. 하지만 티몬에서는 웹과 모바일 환경 모두를 지원하면서 각각의 플랫폼에 동일한 계정으로 동시에 접속해서 정상적으로 물품을 구매하거나 클레임을 요청할 수 있다. 예를 들어 모바일 앱에서 구매 내역에서 상세보기로 제품을 보던 중 물건을 구매하기 위해 PC나 모바일 웹 등과 같은 다른 디바이스에서 물건을 새롭게 구매를 하거나 혹은 클레임(환불 요청이나 교환 요청 등과 같은)에 대한 액션이 일어날 수 있다.</p><p><img src="/images/review/infinite-scroll-position-restoration04.png" alt="각 디바이스에서의 액션"></p><p>그리고 한참 지난 뒤, 모바일 앱에서 상세보기에서 구매 내역으로 넘어왔을 때 과거의 데이터를 노출시켜줄 수 있다. 아마도 눈치가 빠른 분들은 눈치 챘겠지만 구매 내역에서는 각 주문 번호에 대해서 클레임을 요청할 수 있는데, 과거의 데이터를 노출시켜줄 경우 이미 “구매취소”가 된 주문 번호에 대해서 또 “구매취소” 버튼이 노출될 수 있을 것이다. 물론 서버에서도 이러한 유효하지 않은 클레임에 대한 벨리데이션 처리는 되어 있지만, 모바일에서는 사용자가 앱을 완전히 종료하지 않은 상태로 <code>백그라운드 상태</code>로 유지하는 경우가 많다. 그러다가 다시 앱으로 돌아왔는데 기존의 클레임이 그대로 노출되어져 있는 상태라면 혼란을 줄 상황이 생길 수도 있다. </p><p>그래서 인피니티 스크롤 기능을 제공해주는 다른 앱에서는 어떻게 제공해주나를 살펴보았다. 일단 제일 먼저 대표적으로 인피니티 스크롤을 제공해주는 플랫폼 인스타그램과 페이스북을 살펴보았다. 페이스북의 경우에는 타페이지로 이동시 다시 돌아오면 스크롤 위치 뿐만 아니라 기존에 내가 보고 있던 컨텐츠가 다르게 구성되어져 있는 것을 확인할 수 있다. 이러한 정책은 <code>휘발성 컨텐츠</code>를 제공해주기 위해 의도적으로 이러한 방식으로 제공해주는 것이 아닐까 싶다. (휘발성 컨텐츠에 대한 관련 자료는 <a href="https://blogs.adobe.com/digitaldialogue/mobile-ko/why-millennials-are-excited-about-ephemeral-content/" target="_blank" rel="noopener">여기</a>에서 볼 수 있다.) 마찬가지로 인스타그램 역시 살펴보니 캐싱된 데이터를 보여주고 있다. 혹은 공지사항이나 게시물 등과 같이 업데이트 주기가 느리거나 동적인 데이터로 구성되지 않는 경우가 대부분이었다. </p><p>여러가지를 테스트해본 결과 주문에 대한 클레임이 실시간으로 반영되어야 우리와 같이 동적인 데이터로 구성된 화면에서는 인피니티 스크롤을 스크롤 위치를 저장하고자 한다면 명확한 방법이 없다는 것이었다. 그렇다고 다시 최상단으로 올리는 것으로 유지할 수도 없는 상황이었다.</p><h2 id="모든-유저를-만족시킬-수는-없지만-만족시킬-수-있는-유저의-비율을-최대한-높여보자"><a href="#모든-유저를-만족시킬-수는-없지만-만족시킬-수-있는-유저의-비율을-최대한-높여보자" class="headerlink" title="모든 유저를 만족시킬 수는 없지만 만족시킬 수 있는 유저의 비율을 최대한 높여보자."></a>모든 유저를 만족시킬 수는 없지만 만족시킬 수 있는 유저의 비율을 최대한 높여보자.</h2><p>결국에는 우리는 찝찝하지만, 결국에는 이러한 이슈를 해결하여 배포하였다. 그렇다면 우리는 이러한 문제를 어떻게 해결했을까? 일단 모든 팀원들이 양보할 수 없었던 요구사항은 두가지 였다. 첫번째는 <code>우리는 클레임의 상태에 따라 동적으로 UI가 구성되어야하니 캐싱된 데이터는 쓸 수 없다</code>와 두번째는 <code>어떠한 이슈가 있더라도 스크롤 위치는 좋은 사용자 경험을 주기 위해서라도 꼭 복구시켜야 한다.</code>였다. 그래서 우리가 낸 방법은 이러하다.</p><ul><li>👉 구매 내역에서 구매 상세 페이지로 이동할 때 구매 내역의 데이터와 현재의 스크롤 위치 그리고 <code>페이징 정보</code>를 저장한다.</li><li>👉 구매 상세보기 페이지에서 구매내역 페이지로 다시 돌아올 때, 저장된 데이터를 이용하여 구매 내역을 보여준다.</li></ul><p>여기까지는 캐싱된 데이터를 사용한다는 점에서 크게 다르지 않지만, 구매내역을 보여주며 스크롤의 위치를 복구시켜주는 시점에 API에 저장된 페이징 정보를 이용하여 데이터를 한번에 요청한다. 예를 들어 사용자가 2페이지를 보고 있었다면, 페이징 정보에 한번 요청 시 요청하는 데이터의 갯수를 함께 요청을 하는 것이다. 물론 이러한 상황에서 누구나 예상할 수 있는 문제는 데이터의 양을 한번에 요청하게 되면 응답속도가 느릴 수도 있다는 점을 들 수 있다. 예를 들어 누군가는 최악의 경우 1000개의 데이터를 요청해야하는 상황이 생길 수도 있다. </p><p>하지만 이런 점은 구매내역의 정책과 실제 이렇게 오래된 과거의 데이터를 보는 유저의 수를 기반으로 했을 때, 거의 0에 가까운 수치였다. 일단은 구매내역의 정책은 <code>최대 노출 기간</code>이 1년 이내의 주문번호에만 해당이 된다는 것과 1000개의 데이터를 요청하는 유저의 QA 분들을 제외하면 거의 제로에 가까운 수치였다. 무엇보다 팀원 중 한분의 말에 따라 결국에는 설득 당하기도 했다.</p><blockquote><p>우리가 이러한 타협점을 찾고자 하면 절대 타협점을 찾을 수 없다. 우리는 기술적으로 혹은 정책적으로 불가능하다고 100%의 사용자를 만족시키지 못하는 것보다 최소한 80%의 사용자라도 만족시키기 위해 노력해야한다.</p></blockquote><p>사실 우리가 해결한 BULK 형태로 한번에 요청하는 것이 괜한 불필요한 데이터를 서빙하기 때문에 좋은 방법이 아니라는 생각은 든다. 하지만 팀원의 말처럼 모든 사용자를 만족하지 못하는 상황이라면 최소한 80%의 사용자라도 만족시키기 위한 차선의 방법을 찾아야 하지 않을까란 생각을 한다. </p>]]></content>
-    
-    <summary type="html">
-    
-      마이티몬 프로젝트를 진행하며 SPA 환경 속의 인피니티 스크롤 기능에 대해 작업을 하며 겪었던 트러블 슈팅에 대해서 정리를 해봤습니다.
-    
-    </summary>
-    
-      <category term="Theory" scheme="http://blog.martinwork.co.kr/categories/theory/"/>
-    
-    
-      <category term="인피니티 스크롤" scheme="http://blog.martinwork.co.kr/tags/%EC%9D%B8%ED%94%BC%EB%8B%88%ED%8B%B0-%EC%8A%A4%ED%81%AC%EB%A1%A4/"/>
     
   </entry>
   
